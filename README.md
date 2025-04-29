@@ -10,7 +10,7 @@ This project compares five optimization algorithms on the Traveling Salesman Pro
 
 ## How to Run
 1. Download `berlin52.tsp` file and put it inside the `datasets/` folder.
-   - Download from [TSPLIB - Berlin52](http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/tsp/berlin52.tsp)
+   - Download from [TSPLIB - Berlin52](https://www.kaggle.com/datasets/keknure/berlin52)
 2. Install required libraries:
 ```bash
 pip install -r requirements.txt
