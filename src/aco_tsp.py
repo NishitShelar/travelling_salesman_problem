@@ -25,13 +25,19 @@ def run_aco(coords, num_ants=10, iterations=100, alpha=1, beta=5, evaporation=0.
                     else:
                         probs.append(0)
                 probs = np.array(probs)
-                probs /= probs.sum()
-                next_city = np.random.choice(range(n), p=probs)
+                probs_sum = probs.sum()
+                if probs_sum == 0:
+                    # fallback if numerical issues cause zero division
+                    unvisited = list(set(range(n)) - set(route))
+                    next_city = random.choice(unvisited)
+                else:
+                    probs /= probs_sum
+                    next_city = np.random.choice(range(n), p=probs)
                 route.append(next_city)
 
             length = total_distance(coords, route)
             if length < best_length:
-                best_route = route
+                best_route = list(route)
                 best_length = length
             all_routes.append(route)
             all_lengths.append(length)
@@ -41,6 +47,7 @@ def run_aco(coords, num_ants=10, iterations=100, alpha=1, beta=5, evaporation=0.
             for i in range(n):
                 pheromone[route[i]][route[(i+1)%n]] += 1/length
 
-        convergence.append(best_length)
+        convergence.append(float(best_length))
 
-    return best_route, best_length, convergence
+    # ✅ Return Python-native types for FastAPI compatibility
+    return list(map(int, best_route)), float(best_length), [float(val) for val in convergence]
